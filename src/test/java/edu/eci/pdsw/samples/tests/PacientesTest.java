@@ -16,6 +16,11 @@
  */
 package edu.eci.pdsw.samples.tests;
 
+import edu.eci.pdsw.samples.entities.Paciente;
+import edu.eci.pdsw.samples.services.ExcepcionServiciosPacientes;
+import edu.eci.pdsw.samples.services.ServiciosPacientesStub;
+import java.sql.Date;
+import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -26,16 +31,33 @@ import static org.junit.Assert.*;
  */
 public class PacientesTest {
     
-    public PacientesTest() {
-    }
-    
-    @Before
-    public void setUp() {
-    }
+       
     
     @Test
-    public void registroPacienteTest(){
+    public void PacienteNuevo(){
+        ServiciosPacientesStub sps=new ServiciosPacientesStub();
+        try{
+            Paciente yo=new Paciente(1, "cc", "Julian Devia" , new Date(1996, 7, 9));
+            sps.registrarNuevoPaciente(yo);
+            Paciente test=sps.consultarPaciente(1, "cc");
+            assertEquals("No consulta el paciente correcto cuando se agrega paciente nuevo", yo.toString(),test.toString());
+        }catch(ExcepcionServiciosPacientes ex){
+            fail("Arroja excepcion agregando un nuevo paciente");
+        }
         
+    }
+    @Test
+    public void PacienteRepetido(){
+        ServiciosPacientesStub sps=new ServiciosPacientesStub();
+        try{
+            Paciente yo=new Paciente(1, "cc", "Julian Devia" , new Date(1996, 7, 9));
+            sps.registrarNuevoPaciente(yo);
+            sps.registrarNuevoPaciente(yo);
+            Paciente test=sps.consultarPaciente(1, "cc");
+            assertEquals("No consulta el paciente correcto cuando se agrega paciente repetido", yo.toString(),test.toString());
+        }catch(ExcepcionServiciosPacientes ex){
+            fail("Arroja excepcion agregando un paciente repetido");
+        }
     }
     
     
