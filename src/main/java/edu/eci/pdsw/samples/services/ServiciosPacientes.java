@@ -48,9 +48,9 @@ public abstract class ServiciosPacientes {
     
     
     /**
-     * Registra un nuevo PASIENTE en el sistema
+     * Registrar un nuevo PACIENTE en el sistema
      * @param p El nuevo paciente
-     * @throws ExceptionServiciosPacientes si se presenta algún error lógico
+     * @throws ExceptionServiciosPacientes si se presenta algún error logico
      * o de persistencia (por ejemplo, si el paciente ya existe).
      */
     public abstract void registrarNuevoPaciente(Paciente p) throws ExcepcionServiciosPacientes;
