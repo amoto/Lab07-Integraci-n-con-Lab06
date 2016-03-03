@@ -16,6 +16,12 @@
  */
 package edu.eci.pdsw.samples.tests;
 
+import edu.eci.pdsw.samples.entities.Consulta;
+import edu.eci.pdsw.samples.entities.Paciente;
+import edu.eci.pdsw.samples.services.ExcepcionServiciosPacientes;
+import edu.eci.pdsw.samples.services.ServiciosPacientesStub;
+import java.util.Date;
+import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -26,15 +32,22 @@ import static org.junit.Assert.*;
  */
 public class ConsultasTest {
     
-    public ConsultasTest() {
-    }
-    
-    @Before
-    public void setUp() {
-    }
-    
     @Test
-    public void registroPacienteTest(){
+    public void debereriaAgregarConsulta() throws ExcepcionServiciosPacientes{
+        Consulta hoy=new Consulta(new java.sql.Date(2016, 3, 3),"Varicela de julian");
+        ServiciosPacientesStub spt=new ServiciosPacientesStub();
+        Paciente julian=new Paciente(123,"jul321","Julian Devia",new java.sql.Date(1996, 7, 9));
+        spt.registrarNuevoPaciente(julian);
+        spt.agregarConsultaAPaciente(123, "jul321", hoy);
+        Set<Consulta> lol=spt.consultarPaciente(123, "jul321").getConsultas();
+        for(Consulta c: lol){
+            if(c.getResumen().equals("Varicela de julian")){
+                 assertEquals("Al paciente no se le agrego la consulta",c.toString(),hoy.toString());
+            }else{
+                fail("No se encontro ese paciente");
+            }
+        }
+       
         
     }
     
