@@ -32,7 +32,7 @@ import javax.faces.bean.SessionScoped;
  *
  * @author hcadavid
  */
-@ManagedBean(name="RegistroBean")
+ @ManagedBean(name="RegistroBean")
 @SessionScoped
 public class RegistroConsultaBean implements Serializable{
     
