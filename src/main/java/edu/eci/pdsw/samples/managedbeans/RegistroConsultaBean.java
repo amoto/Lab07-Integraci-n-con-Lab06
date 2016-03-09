@@ -22,6 +22,8 @@ import edu.eci.pdsw.samples.services.ExcepcionServiciosPacientes;
 import edu.eci.pdsw.samples.services.ServiciosPacientes;
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.LinkedList;
+import java.util.List;
 //import javax.annotation.ManagedBean;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -35,6 +37,10 @@ import javax.faces.bean.SessionScoped;
 public class RegistroConsultaBean implements Serializable{
     
     ServiciosPacientes sp=ServiciosPacientes.getInstance();
+    
+    //La informacion del paciente actual, del que se consultaran las consultas cuando sea requerido
+    private int id_paciente;
+    private String tipo_id_paciente;
     
     /**
      * registra a un nuevo paciente en el sistema
@@ -60,8 +66,46 @@ public class RegistroConsultaBean implements Serializable{
     public void agregarConsultaPaciente(int paciente_id,String tipo_id,Date fechayHora, String resumen) throws ExcepcionServiciosPacientes{
         sp.agregarConsultaAPaciente(paciente_id, tipo_id, new Consulta(fechayHora, resumen));
     }
+
+    /**
+     * @return the id_paciente
+     */
+    public int getId_paciente() {
+        return id_paciente;
+    }
+
+    /**
+     * @param id_paciente the id_paciente to set
+     */
+    public void setId_paciente(int id_paciente) {
+        this.id_paciente = id_paciente;
+    }
+
+    /**
+     * @return the tipo_id_paciente
+     */
+    public String getTipo_id_paciente() {
+        return tipo_id_paciente;
+    }
+
+    /**
+     * @param tipo_id_paciente the tipo_id_paciente to set
+     */
+    public void setTipo_id_paciente(String tipo_id_paciente) {
+        this.tipo_id_paciente = tipo_id_paciente;
+    }
     
-    
+    /**
+     * Consulta todas las consulas del paciente
+     * @return todas las consultas del paciente
+     * @throws ExcepcionServiciosPacientes si el paciente no existe
+     */
+    public List<Consulta> consultasPaciente() throws ExcepcionServiciosPacientes{
+        Paciente paciente_actual=sp.consultarPaciente(id_paciente, tipo_id_paciente);
+        List<Consulta> consultas=new LinkedList<Consulta>();
+        consultas.addAll(paciente_actual.getConsultas());
+        return consultas;
+    }
     
     
 }

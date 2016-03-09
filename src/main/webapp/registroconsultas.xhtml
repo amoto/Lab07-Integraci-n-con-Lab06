@@ -5,7 +5,28 @@
     <h:head></h:head>
 
     <h:body>
-        
+        <h:form id="formulario_agregar_consultas">
+            <   p style="font-family: times, serif; font-size:16pt; font-style:bold">
+            Consultas </p>
+            <p:layout style="min-width:400px;min-height:500px;">
+            <p:layoutUnit position="west" resizable="true" size="700" minSize="40" maxSize="1000">
+                <p:dataTable id="tabla" var="consulta" value="#{RegistroBean.consultasPaciente}" selectionMode="single" selection="#{ShopingCar.selectedProduct}" rowKey="#{producto.id}">
+
+                    <p:column headerText="Id">
+                        <h:outputText value="#{consulta.id}" />
+                    </p:column>
+
+                    <p:column headerText="Fecha y Hora">
+                        <h:outputText value="#{consulta.fechayHora}" />
+                    </p:column>
+
+                    <p:column headerText="Resumen">
+                        <h:outputText value="#{consulta.resumen}" />
+                    </p:column>
+                </p:dataTable>
+            </p:layoutUnit>
+            </p:layout>
+        </h:form>
     </h:body>
 
 </html>
