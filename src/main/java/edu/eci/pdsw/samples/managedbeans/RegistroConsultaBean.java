@@ -16,20 +16,52 @@
  */
 package edu.eci.pdsw.samples.managedbeans;
 
+import edu.eci.pdsw.samples.entities.Consulta;
+import edu.eci.pdsw.samples.entities.Paciente;
+import edu.eci.pdsw.samples.services.ExcepcionServiciosPacientes;
 import edu.eci.pdsw.samples.services.ServiciosPacientes;
 import java.io.Serializable;
-import javax.annotation.ManagedBean;
-import javax.enterprise.context.SessionScoped;
+import java.sql.Date;
+//import javax.annotation.ManagedBean;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 
 /**
  *
  * @author hcadavid
  */
-@ManagedBean
+@ManagedBean(name="RegistroBean")
 @SessionScoped
 public class RegistroConsultaBean implements Serializable{
     
     ServiciosPacientes sp=ServiciosPacientes.getInstance();
+    
+    /**
+     * registra a un nuevo paciente en el sistema
+     * @param id el numero de identificacion del paciente
+     * @param tipo_id el tipo de documento de identificacion del paciente
+     * @param nombre el nombre del paciente
+     * @param fechaNacimiento la fecha de nacimiento del paciente
+     * @throws ExcepcionServiciosPacientes si se presenta algún error logico
+     * o de persistencia (por ejemplo, si el paciente ya existe).
+     */
+    public void registrarNuevoPaciente(int id, String tipo_id,String nombre, Date fechaNacimiento) throws ExcepcionServiciosPacientes{
+        sp.registrarNuevoPaciente(new Paciente(id,tipo_id,nombre,fechaNacimiento));
+    }
+    
+    /**
+     * registra una consulta al paciente dado
+     * @param paciente_id el numero de identifiacion del paciente
+     * @param tipo_id el tipo de documento de identificacion del paciente
+     * @param fechayHora la fecha y hora de la consulta
+     * @param resumen el resumen de la consulta
+     * @throws ExcepcionServiciosPacientes si se presenta algún error de persistencia o si el paciente no existe.
+     */
+    public void agregarConsultaPaciente(int paciente_id,String tipo_id,Date fechayHora, String resumen) throws ExcepcionServiciosPacientes{
+        sp.agregarConsultaAPaciente(paciente_id, tipo_id, new Consulta(fechayHora, resumen));
+    }
+    
+    
     
     
 }
