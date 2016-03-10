@@ -19,10 +19,13 @@ package edu.eci.pdsw.samples.services;
 import edu.eci.pdsw.samples.entities.Consulta;
 import edu.eci.pdsw.samples.entities.Paciente;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -81,6 +84,19 @@ public class ServiciosPacientesStub extends ServiciosPacientes{
         
         
     }
+
+    @Override
+    public ArrayList<Paciente> getPacientes() {
+       for(Tupla<Integer, String> i: pacientes.keySet()){
+           if(!pacientesLista.contains(pacientes.get(i))){
+                pacientesLista.add(pacientes.get(i));
+           }
+       }
+       return pacientesLista;
+    }
+
+    
+
    
 
 }

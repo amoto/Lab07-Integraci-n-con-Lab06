@@ -10,7 +10,7 @@
         <h:form id="formulario_consultas">
             <p:layout style="min-width:400px;min-height:500px;">
             <p:layoutUnit position="center" resizable="true" size="700" minSize="40" maxSize="1000">
-                <p:dataTable id="todas_consultas" var="consulta" value="#{RegistroBean.ConsultasPaciente()}" selectionMode="single" selection="#{RegistroBean.selectedPaciente}" rowKey="#{consulta.id}">
+                <p:dataTable id="todas_consultas" var="consulta" value="#{RegistroBean.ConsultasPaciente()}" selectionMode="single" selection="#{RegistroBean.selectPaciente}" rowKey="#{consulta.id}">
 
                     <p:column headerText="Id">
                         <h:outputText value="#{consulta.id}" />

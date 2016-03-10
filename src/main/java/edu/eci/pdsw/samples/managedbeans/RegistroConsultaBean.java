@@ -25,6 +25,7 @@ import edu.eci.pdsw.samples.services.ExcepcionServiciosPacientes;
 import edu.eci.pdsw.samples.services.ServiciosPacientes;
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
@@ -45,7 +46,7 @@ public class RegistroConsultaBean implements Serializable {
     int dia=0;
     int mes=0;
     int anio=0;
-    private Paciente selectedPaciente;
+    private Paciente selectPaciente;
     
     //Atributos para consulta
     private int anioc;
@@ -133,96 +134,6 @@ public class RegistroConsultaBean implements Serializable {
         consultas.addAll(paciente_actual.getConsultas());
         return consultas;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     public void start() throws ExcepcionServiciosPacientes{
         id=123;
         tipoId="cc";
@@ -238,15 +149,15 @@ public class RegistroConsultaBean implements Serializable {
     /**
      * @return the selectedPaciente
      */
-    public Paciente getSelectedPaciente() {
-        return selectedPaciente;
+    public Paciente getSelectPaciente() {
+        return selectPaciente;
     }
 
     /**
      * @param selectedPaciente the selectedPaciente to set
      */
-    public void setSelectedPaciente(Paciente selectedPaciente) {
-        this.selectedPaciente = selectedPaciente;
+    public void setSelectPaciente(Paciente selectedPaciente) {
+        this.selectPaciente = selectedPaciente;
     }
 
     /**
@@ -303,6 +214,10 @@ public class RegistroConsultaBean implements Serializable {
      */
     public void setResumenc(String reumenc) {
         this.resumenc = reumenc;
+    }
+    
+    public ArrayList<Paciente> getPaciente(){
+        return sp.getPacientes();
     }
 }
 
