@@ -25,6 +25,8 @@ import edu.eci.pdsw.samples.services.ExcepcionServiciosPacientes;
 import edu.eci.pdsw.samples.services.ServiciosPacientes;
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.LinkedList;
+import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
@@ -34,15 +36,22 @@ import javax.faces.bean.SessionScoped;
  */
 @ManagedBean(name="RegistroBean")
 @SessionScoped
-public class RegistroConsultaBean implements Serializable{
-    ServiciosPacientes sp=ServiciosPacientes.getInstance();
-   
-        int id=0;
-        String tipoId="";
-        String nombre="";
-        int dia=0;
-        int mes=0;
-        int anio=0;
+public class RegistroConsultaBean implements Serializable {
+    public static ServiciosPacientes sp=ServiciosPacientes.getInstance();
+    //Atributos para paciente
+    int id=0;
+    String tipoId="";
+    String nombre="";
+    int dia=0;
+    int mes=0;
+    int anio=0;
+    private Paciente selectedPaciente;
+    
+    //Atributos para consulta
+    private int anioc;
+    private int mesc;
+    private int diac;
+    private String resumenc;
     
     /**
      * registra a un nuevo paciente en el sistema
@@ -113,12 +122,187 @@ public class RegistroConsultaBean implements Serializable{
      * @param resumen el resumen de la consulta
      * @throws ExcepcionServiciosPacientes si se presenta algún error de persistencia o si el paciente no existe.
      */
-    public void agregarConsultaPaciente(int paciente_id,String tipo_id,Date fechayHora, String resumen) throws ExcepcionServiciosPacientes{
-        sp.agregarConsultaAPaciente(paciente_id, tipo_id, new Consulta(fechayHora, resumen));
+    public void agregarConsultaPaciente() throws ExcepcionServiciosPacientes{
+        Date d=new Date(anioc, mesc, diac);
+        sp.agregarConsultaAPaciente(id, tipoId, new Consulta(d, resumenc));
+    }
+    
+    public List<Consulta> ConsultasPaciente() throws ExcepcionServiciosPacientes{
+        Paciente paciente_actual = sp.consultarPaciente(id, tipoId);
+            List<Consulta> consultas=new LinkedList<Consulta>();
+        consultas.addAll(paciente_actual.getConsultas());
+        return consultas;
     }
     
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    public void start() throws ExcepcionServiciosPacientes{
+        id=123;
+        tipoId="cc";
+        nombre="yo";
+        dia=1;
+        mes=8;
+        anio=2000;
+        Paciente p=new Paciente(id, tipoId, nombre, new Date(anio, mes, dia));
+        sp.registrarNuevoPaciente(p);
+        //sp.agregarConsultaAPaciente(id, tipoId, new Consulta(new Date(123987), "asadasd"));
+    }
+
+    /**
+     * @return the selectedPaciente
+     */
+    public Paciente getSelectedPaciente() {
+        return selectedPaciente;
+    }
+
+    /**
+     * @param selectedPaciente the selectedPaciente to set
+     */
+    public void setSelectedPaciente(Paciente selectedPaciente) {
+        this.selectedPaciente = selectedPaciente;
+    }
+
+    /**
+     * @return the anioc
+     */
+    public int getAnioc() {
+        return anioc;
+    }
+
+    /**
+     * @param anioc the anioc to set
+     */
+    public void setAnioc(int anioc) {
+        this.anioc = anioc;
+    }
+
+    /**
+     * @return the mesc
+     */
+    public int getMesc() {
+        return mesc;
+    }
+
+    /**
+     * @param mesc the mesc to set
+     */
+    public void setMesc(int mesc) {
+        this.mesc = mesc;
+    }
+
+    /**
+     * @return the diac
+     */
+    public int getDiac() {
+        return diac;
+    }
+
+    /**
+     * @param diac the diac to set
+     */
+    public void setDiac(int diac) {
+        this.diac = diac;
+    }
+    
+    /**
+     * @return the reumenc
+     */
+    public String getResumenc() {
+        return resumenc;
+    }
+
+    /**
+     * @param reumenc the reumenc to set
+     */
+    public void setResumenc(String reumenc) {
+        this.resumenc = reumenc;
+    }
 }
 
