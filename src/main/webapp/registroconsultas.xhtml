@@ -6,8 +6,8 @@
     <h:head></h:head>
 
     <h:body>
-        #{RegistroBean.start()}
         <h:form id="formulario_consultas">
+            <p:outputLabel value="#{RegistroBean.selectPaciente.id} #{RegistroBean.selectPaciente.tipo_id} #{RegistroBean.selectPaciente.nombre}"/>
             <p:layout style="min-width:400px;min-height:500px;">
             <p:layoutUnit position="center" resizable="true" size="700" minSize="40" maxSize="1000">
                 <p:dataTable id="todas_consultas" var="consulta" value="#{RegistroBean.ConsultasPaciente()}" selectionMode="single" selection="#{RegistroBean.selectPaciente}" rowKey="#{consulta.id}">

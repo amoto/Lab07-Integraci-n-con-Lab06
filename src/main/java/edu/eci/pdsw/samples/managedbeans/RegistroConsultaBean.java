@@ -129,21 +129,10 @@ public class RegistroConsultaBean implements Serializable {
     }
     
     public List<Consulta> ConsultasPaciente() throws ExcepcionServiciosPacientes{
-        Paciente paciente_actual = sp.consultarPaciente(id, tipoId);
+        Paciente paciente_actual = sp.consultarPaciente(selectPaciente.getId(), selectPaciente.getTipo_id());
             List<Consulta> consultas=new LinkedList<Consulta>();
         consultas.addAll(paciente_actual.getConsultas());
         return consultas;
-    }
-    public void start() throws ExcepcionServiciosPacientes{
-        id=123;
-        tipoId="cc";
-        nombre="yo";
-        dia=1;
-        mes=8;
-        anio=2000;
-        Paciente p=new Paciente(id, tipoId, nombre, new Date(anio, mes, dia));
-        sp.registrarNuevoPaciente(p);
-        //sp.agregarConsultaAPaciente(id, tipoId, new Consulta(new Date(123987), "asadasd"));
     }
 
     /**
