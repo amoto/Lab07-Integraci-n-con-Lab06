@@ -1,3 +1,4 @@
+
 /*
  * Copyright (C) 2016 hcadavid
  *
@@ -16,15 +17,14 @@
  */
 package edu.eci.pdsw.samples.managedbeans;
 
+import static com.sun.org.apache.xalan.internal.lib.ExsltDatetime.date;
+import static com.sun.org.apache.xalan.internal.lib.ExsltDatetime.date;
 import edu.eci.pdsw.samples.entities.Consulta;
 import edu.eci.pdsw.samples.entities.Paciente;
 import edu.eci.pdsw.samples.services.ExcepcionServiciosPacientes;
 import edu.eci.pdsw.samples.services.ServiciosPacientes;
 import java.io.Serializable;
 import java.sql.Date;
-import java.util.LinkedList;
-import java.util.List;
-//import javax.annotation.ManagedBean;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
@@ -32,15 +32,17 @@ import javax.faces.bean.SessionScoped;
  *
  * @author hcadavid
  */
- @ManagedBean(name="RegistroBean")
+@ManagedBean(name="RegistroBean")
 @SessionScoped
 public class RegistroConsultaBean implements Serializable{
-    
     ServiciosPacientes sp=ServiciosPacientes.getInstance();
-    
-    //La informacion del paciente actual, del que se consultaran las consultas cuando sea requerido
-    private int id_paciente;
-    private String tipo_id_paciente;
+   
+        int id=0;
+        String tipoId="";
+        String nombre="";
+        int dia=0;
+        int mes=0;
+        int anio=0;
     
     /**
      * registra a un nuevo paciente en el sistema
@@ -51,8 +53,56 @@ public class RegistroConsultaBean implements Serializable{
      * @throws ExcepcionServiciosPacientes si se presenta algún error logico
      * o de persistencia (por ejemplo, si el paciente ya existe).
      */
-    public void registrarNuevoPaciente(int id, String tipo_id,String nombre, Date fechaNacimiento) throws ExcepcionServiciosPacientes{
-        sp.registrarNuevoPaciente(new Paciente(id,tipo_id,nombre,fechaNacimiento));
+    public void registrarNuevoPaciente() throws ExcepcionServiciosPacientes{
+        sp.registrarNuevoPaciente(new Paciente(id,tipoId,nombre,new Date(anio, mes, dia)));
+    }
+    
+    public void setId(int nuevoId){
+        id=nuevoId;
+    }
+    
+     public int getId(){
+        return id;
+    }
+    
+    public void setNombre(String nuevoNombre){
+        nombre=nuevoNombre;
+    }
+    
+    public String getNombre(){
+        return nombre;
+    }
+    
+    public void setTipoId(String nuevoTipoId){
+        tipoId=nuevoTipoId;
+    }
+    
+    public String getTipoId(){
+        return tipoId;
+    }
+    
+    public void setDia(int nuevoDia){
+        dia=nuevoDia;
+    }
+    
+    public int getDia(){
+        return dia;
+    }
+    
+    public void setMes(int nuevoMes){
+        mes=nuevoMes;
+    }
+    
+    public int getMes(){
+        return mes;
+    }
+    
+    public void setAnio(int nuevoAnio){
+        anio=nuevoAnio;
+    }
+    
+    public int getAnio(){
+        return anio;
     }
     
     /**
@@ -66,46 +116,9 @@ public class RegistroConsultaBean implements Serializable{
     public void agregarConsultaPaciente(int paciente_id,String tipo_id,Date fechayHora, String resumen) throws ExcepcionServiciosPacientes{
         sp.agregarConsultaAPaciente(paciente_id, tipo_id, new Consulta(fechayHora, resumen));
     }
-
-    /**
-     * @return the id_paciente
-     */
-    public int getId_paciente() {
-        return id_paciente;
-    }
-
-    /**
-     * @param id_paciente the id_paciente to set
-     */
-    public void setId_paciente(int id_paciente) {
-        this.id_paciente = id_paciente;
-    }
-
-    /**
-     * @return the tipo_id_paciente
-     */
-    public String getTipo_id_paciente() {
-        return tipo_id_paciente;
-    }
-
-    /**
-     * @param tipo_id_paciente the tipo_id_paciente to set
-     */
-    public void setTipo_id_paciente(String tipo_id_paciente) {
-        this.tipo_id_paciente = tipo_id_paciente;
-    }
     
-    /**
-     * Consulta todas las consulas del paciente
-     * @return todas las consultas del paciente
-     * @throws ExcepcionServiciosPacientes si el paciente no existe
-     */
-    public List<Consulta> consultasPaciente() throws ExcepcionServiciosPacientes{
-        Paciente paciente_actual=sp.consultarPaciente(id_paciente, tipo_id_paciente);
-        List<Consulta> consultas=new LinkedList<Consulta>();
-        consultas.addAll(paciente_actual.getConsultas());
-        return consultas;
-    }
+    
     
     
 }
+
