@@ -25,6 +25,7 @@ import edu.eci.pdsw.samples.services.ExcepcionServiciosPacientes;
 import edu.eci.pdsw.samples.services.ServiciosPacientes;
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.ArrayList;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
@@ -43,6 +44,7 @@ public class RegistroConsultaBean implements Serializable{
         int dia=0;
         int mes=0;
         int anio=0;
+        Paciente selectPaciente;
     
     /**
      * registra a un nuevo paciente en el sistema
@@ -55,6 +57,14 @@ public class RegistroConsultaBean implements Serializable{
      */
     public void registrarNuevoPaciente() throws ExcepcionServiciosPacientes{
         sp.registrarNuevoPaciente(new Paciente(id,tipoId,nombre,new Date(anio, mes, dia)));
+    }
+    
+    public Paciente getSelectPaciente(){
+        return selectPaciente;
+    }
+    
+    public void setSelectPaciente(Paciente selectPaciente){
+        this.selectPaciente=selectPaciente;
     }
     
     public void setId(int nuevoId){
@@ -103,6 +113,10 @@ public class RegistroConsultaBean implements Serializable{
     
     public int getAnio(){
         return anio;
+    }
+    
+    public ArrayList<Paciente> getPaciente(){
+        return sp.getPacientes();
     }
     
     /**

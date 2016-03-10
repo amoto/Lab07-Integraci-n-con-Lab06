@@ -18,6 +18,8 @@ package edu.eci.pdsw.samples.services;
 
 import edu.eci.pdsw.samples.entities.Consulta;
 import edu.eci.pdsw.samples.entities.Paciente;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -27,9 +29,11 @@ public abstract class ServiciosPacientes {
     
     
     private static ServiciosPacientes instance=new ServiciosPacientesStub();
+    public ArrayList<Paciente> pacientesLista;
     
     
-    protected ServiciosPacientes(){        
+    protected ServiciosPacientes(){
+        pacientesLista=new ArrayList<Paciente>();
 
     }
     
@@ -64,4 +68,5 @@ public abstract class ServiciosPacientes {
      */
     public abstract void agregarConsultaAPaciente(int idPaciente,String tipoid,Consulta c) throws ExcepcionServiciosPacientes;
     
+    public abstract ArrayList<Paciente> getPacientes();
 }
