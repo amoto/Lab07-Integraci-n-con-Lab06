@@ -26,6 +26,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  *
@@ -52,7 +54,18 @@ public class JDBCDaoPaciente implements DaoPaciente {
             ResultSet result=ps.executeQuery();
             result.next();
             p= new Paciente(result.getInt(1), result.getString(3), result.getString(2), result.getDate(4));
-            String consultaConsultas ="";
+            String consultaConsultas ="select idCONSULTAS, fecha_y_hora, resumen from CONSULTAS "
+                    + "where PACIENTES_id = ? and PACIENTES_tipo_id = ?";
+            ps=con.prepareStatement(consultaConsultas);
+            ps.setInt(0, idpaciente);
+            ps.setString(1, tipoid);
+            result=ps.executeQuery();
+            Set<Consulta> consultas=new HashSet<Consulta>();
+            while(result.next()){
+                consultas.add(new Consulta(result.getDate(2), result.getString(3)));
+            }
+            p.setConsultas(consultas);
+            
             
         } catch (SQLException ex) {
             throw new PersistenceException("An error ocurred while loading "+idpaciente,ex);

@@ -45,31 +45,56 @@ public class PacientePersistenceTest {
     public void setUp() {
     }
     
+    public static InputStream input = ClassLoader.getSystemResourceAsStream("applicationconfig_test.properties");
+    public static Properties properties=new Properties();
+    
     @Test
-    public void databaseConnectionTest() throws IOException, PersistenceException{
-        InputStream input = null;
-        input = ClassLoader.getSystemResourceAsStream("applicationconfig_test.properties");
-        Properties properties=new Properties();
+    public void CE1() throws IOException, PersistenceException{
         properties.load(input);
-        
         DaoFactory daof=DaoFactory.getInstance(properties);
-        
         daof.beginSession();
-        
         DaoPaciente reg=daof.getDaoPaciente();
-        //IMPLEMENTAR PRUEBAS
+        
         //Deberia registrar paciente nuevo con mas de una consulta
         Paciente p4 = new Paciente(12345,"TI","Pepito Perez",Date.valueOf("1996-07-09"));
         Consulta c5 = new Consulta(Date.valueOf("2009-10-12"),"El paciente tiene fiebre");
         Consulta c6 = new Consulta(Date.valueOf("2009-10-13"),"El paciente sigue con fiebre");
-        Set<Consulta> consultas4=new HashSet<Consulta>();
+        Set<Consulta> consultas4=new HashSet<>();
         consultas4.add(c5);consultas4.add(c6);
         p4.setConsultas(consultas4);
         reg.save(p4);
-        
+        Paciente test =reg.load(p4.getId(),p4.getTipo_id());
+        boolean worked=p4.getId()==test.getId() && p4.getTipo_id().equals(test.getTipo_id())
+                && p4.getNombre().equals(test.getNombre()) && p4.getFechaNacimiento().equals(test.getFechaNacimiento());
+        daof.commitTransaction();
+        daof.endSession();  
+    }
+    @Test
+    public void CE2() throws IOException, PersistenceException{
+        properties.load(input);
+        DaoFactory daof=DaoFactory.getInstance(properties);
+        daof.beginSession();
+        DaoPaciente reg=daof.getDaoPaciente();
         
         //Deberia registrar paciente nuevo sin consultas
-        reg.save(new Paciente(9876, "TI", "Carmenzo", Date.valueOf("1995-07-10")));
+        Paciente p = new Paciente(9876, "TI", "Carmenzo", Date.valueOf("1995-07-10"));
+        reg.save(p);
+        daof.commitTransaction();
+        daof.endSession();  
+    }
+    
+    @Test
+    public void databaseConnectionTest() throws IOException, PersistenceException{
+        properties.load(input);
+        DaoFactory daof=DaoFactory.getInstance(properties);
+        daof.beginSession();
+        DaoPaciente reg=daof.getDaoPaciente();       
+        
+        //IMPLEMENTAR PRUEBAS
+        
+        
+        
+        
         
         //Deberia registrar paciente con una sola consulta
         Paciente p1=new Paciente(123,"CC","German Lopez",new Date(1994,10,10));
