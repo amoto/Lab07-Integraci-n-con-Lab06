@@ -45,24 +45,23 @@ public class JDBCDaoPaciente implements DaoPaciente {
     @Override
     public Paciente load(int idpaciente, String tipoid) throws PersistenceException {
         PreparedStatement ps;
-        Paciente p;
+        Paciente p = null;
         try {
-            String consulta="select id,tipo_id,nombre,fecha_nacimiento from PACIENTES where id = ? and tipo_id = ?";
+            String consulta= "select pac.nombre, pac.fecha_nacimiento, con.idCONSULTAS, con.fecha_y_hora, con.resumen from PACIENTES as pac inner join CONSULTAS as con on con.PACIENTES_id=pac.id and con.PACIENTES_tipo_id=pac.tipo_id where pac.id= ? and pac.tipo_id= ?";
             ps=con.prepareStatement(consulta);
             ps.setInt(0, idpaciente);
             ps.setString(1, tipoid);
             ResultSet result=ps.executeQuery();
-            result.next();
-            p= new Paciente(result.getInt(1), result.getString(3), result.getString(2), result.getDate(4));
-            String consultaConsultas ="select idCONSULTAS, fecha_y_hora, resumen from CONSULTAS "
-                    + "where PACIENTES_id = ? and PACIENTES_tipo_id = ?";
-            ps=con.prepareStatement(consultaConsultas);
-            ps.setInt(0, idpaciente);
-            ps.setString(1, tipoid);
-            result=ps.executeQuery();
-            Set<Consulta> consultas=new HashSet<Consulta>();
+            Set<Consulta> consultas=new HashSet<>();
+            boolean paciente=false;
             while(result.next()){
-                consultas.add(new Consulta(result.getDate(2), result.getString(3)));
+                if(!paciente){
+                    p= new Paciente(idpaciente, tipoid, result.getString(1), result.getDate(2));
+                    paciente=true;
+                }
+                Consulta c=new Consulta(result.getDate(4), result.getString(5));
+                c.setId(result.getInt(3));
+                consultas.add(c);
             }
             p.setConsultas(consultas);
             
