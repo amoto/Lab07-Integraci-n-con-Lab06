@@ -64,10 +64,13 @@ public class PacientePersistenceTest {
         p4.setConsultas(consultas4);
         reg.save(p4);
         Paciente test =reg.load(p4.getId(),p4.getTipo_id());
-        boolean worked=p4.getId()==test.getId() && p4.getTipo_id().equals(test.getTipo_id())
-                && p4.getNombre().equals(test.getNombre()) && p4.getFechaNacimiento().equals(test.getFechaNacimiento());
+        boolean worked= test.toString().equals(p4.toString());
+        for (Consulta c: test.getConsultas()){
+            worked=worked && consultas4.contains(c);
+        }
         daof.commitTransaction();
         daof.endSession();  
+        Assert.assertTrue("Falla agregando un paciente con mas de una consulta", worked);
     }
     @Test
     public void CE2() throws IOException, PersistenceException{
@@ -79,8 +82,12 @@ public class PacientePersistenceTest {
         //Deberia registrar paciente nuevo sin consultas
         Paciente p = new Paciente(9876, "TI", "Carmenzo", Date.valueOf("1995-07-10"));
         reg.save(p);
+        Paciente test= reg.load(p.getId(),p.getTipo_id());
+        boolean worked =test.toString().equals(p.toString());
         daof.commitTransaction();
         daof.endSession();  
+        Assert.assertTrue("Falla agregando paciente sin consultas",worked);
+        
     }
     
     public void CE3() throws IOException, PersistenceException{
@@ -100,7 +107,7 @@ public class PacientePersistenceTest {
 	daof.commitTransaction();
         daof.endSession(); 
     }
-    
+    /*
     @Test
     public void databaseConnectionTest() throws IOException, PersistenceException{
         properties.load(input);
@@ -138,7 +145,7 @@ public class PacientePersistenceTest {
         }
         daof.commitTransaction();
         daof.endSession();        
-    }
+    }*/
     
     
 }

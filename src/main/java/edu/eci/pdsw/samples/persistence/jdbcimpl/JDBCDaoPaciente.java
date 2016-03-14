@@ -78,27 +78,30 @@ public class JDBCDaoPaciente implements DaoPaciente {
     public void save(Paciente p) throws PersistenceException {
         PreparedStatement ps;
         try {
-        String insertar="insert on PACIENTES (id,tipo_id,nombre,fecha_nacimiento) values(?,?,?,?)";
+        String insertar="insert into PACIENTES (id,tipo_id,nombre,fecha_nacimiento) values(?,?,?,?)";
         ps=con.prepareStatement(insertar);
         ps.setInt(1,p.getId());
         ps.setString(2, p.getTipo_id());
         ps.setString(3, p.getNombre());
         ps.setDate(4, p.getFechaNacimiento());
+        ps.executeUpdate();
         Set<Consulta> consultas=p.getConsultas();
         for(Consulta c:consultas){
-            String insertarC="insert on CONSULTAS (idCONSULTAS,fecha_y_hora,resumen,PACIENTES_id,PACIENTES_tipo_id) values (?,?,?,?,?)";
+            String insertarC="insert into CONSULTAS (idCONSULTAS,fecha_y_hora,resumen,PACIENTES_id,PACIENTES_tipo_id) values (?,?,?,?,?)";
             ps=con.prepareStatement(insertarC);
+            System.out.println(c.getId());
             ps.setInt(1, c.getId());
             ps.setDate(2,c.getFechayHora());
             ps.setString(3,c.getResumen());
             ps.setInt(4,p.getId());
             ps.setString(5,p.getTipo_id());
+            ps.executeUpdate(); 
         }
         int res=ps.executeUpdate();
         if(res!=1)throw new PersistenceException("Ese paciente ya esta registrado");
             con.commit();
         } catch (SQLException ex) {
-            throw new PersistenceException("No se registro el paciente correctamente",ex);
+            throw new PersistenceException("No se registro el paciente correctamente"+ex.getMessage(),ex);
         }
         
         throw new RuntimeException("No se ha implementado el metodo 'load' del DAOPAcienteJDBC");
