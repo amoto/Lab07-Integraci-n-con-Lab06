@@ -47,10 +47,12 @@ public class JDBCDaoPaciente implements DaoPaciente {
         PreparedStatement ps;
         Paciente p = null;
         try {
-            String consulta= "select pac.nombre, pac.fecha_nacimiento, con.idCONSULTAS, con.fecha_y_hora, con.resumen from PACIENTES as pac inner join CONSULTAS as con on con.PACIENTES_id=pac.id and con.PACIENTES_tipo_id=pac.tipo_id where pac.id= ? and pac.tipo_id= ?";
+            String consulta= "select pac.nombre, pac.fecha_nacimiento, con.idCONSULTAS, con.fecha_y_hora, con.resumen "
+                    + "from PACIENTES as pac LEFT join CONSULTAS as con on con.PACIENTES_id=pac.id and con.PACIENTES_tipo_id=pac.tipo_id "
+                    + "where pac.id= ? and pac.tipo_id= ?";
             ps=con.prepareStatement(consulta);
-            ps.setInt(0, idpaciente);
-            ps.setString(1, tipoid);
+            ps.setInt(1, idpaciente);
+            ps.setString(2, tipoid);
             ResultSet result=ps.executeQuery();
             Set<Consulta> consultas=new HashSet<>();
             boolean paciente=false;
@@ -60,14 +62,15 @@ public class JDBCDaoPaciente implements DaoPaciente {
                     paciente=true;
                 }
                 Consulta c=new Consulta(result.getDate(4), result.getString(5));
-                c.setId(result.getInt(3));
+                //c.setId(result.getInt(3));
                 consultas.add(c);
             }
+            if(p==null) throw new PersistenceException("El paciente con "+tipoid+" "+idpaciente+" no existe");
             p.setConsultas(consultas);
             
             
         } catch (SQLException ex) {
-            throw new PersistenceException("An error ocurred while loading "+idpaciente,ex);
+            throw new PersistenceException("An error ocurred while loading "+idpaciente+" "+ex.getMessage(),ex);
         }
         return p;
         
@@ -77,13 +80,14 @@ public class JDBCDaoPaciente implements DaoPaciente {
     public void save(Paciente p) throws PersistenceException {
         PreparedStatement ps;
         try {
-        String insertar="insert into PACIENTES (id,tipo_id,nombre,fecha_nacimiento) values(?,?,?,?)";
+        String insertar="insert into PACIENTES  values(?,?,?,?)";
         ps=con.prepareStatement(insertar);
         ps.setInt(1,p.getId());
         ps.setString(2, p.getTipo_id());
         ps.setString(3, p.getNombre());
         ps.setDate(4, p.getFechaNacimiento());
-        ps.executeUpdate();
+        System.out.println(p.getId()+" "+p.getTipo_id()+" "+p.getNombre()+" "+p.getFechaNacimiento());
+
         Set<Consulta> consultas=p.getConsultas();
         int res=ps.executeUpdate();
         if(res!=1)throw new PersistenceException("Ese paciente ya esta registrado");
