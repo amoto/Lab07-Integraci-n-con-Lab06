@@ -93,12 +93,67 @@ public class PacientePersistenceTest {
         DaoPaciente reg=daof.getDaoPaciente();
         Paciente p1=new Paciente(123,"CC","German Lopez",new Date(1994,10,10));
         Consulta c1=new Consulta(new Date(2016,1,13),"El paciente presenta fiebre alta");
-        Set<Consulta> consultas1=new LinkedHashSet<Consulta>();
-        consultas1.add(c1);
-        p1.setConsultas(consultas1);
+        Set<Consulta> consultas=new LinkedHashSet<Consulta>();
+        consultas.add(c1);
+        p1.setConsultas(consultas);
         reg.save(p1);
+        Paciente com=reg.load(123,"CC");
 	daof.commitTransaction();
         daof.endSession(); 
+        Assert.assertEquals(p1.toString(),com.toString());
+    }
+    
+    @Test
+    public void CE3Segundo() throws IOException, PersistenceException{
+        properties.load(input);
+        
+        DaoFactory daof=DaoFactory.getInstance(properties);
+        
+        daof.beginSession();
+        
+        DaoPaciente reg=daof.getDaoPaciente();
+        Paciente p1=new Paciente(321,"CC","Julian Devia",new Date(1996,6,9));
+        Consulta c1=new Consulta(new Date(2016,3,20),"El paciente presenta una pequeña fractura en la tibia");
+        Set<Consulta> consultas=new LinkedHashSet<Consulta>();
+        consultas.add(c1);
+        p1.setConsultas(consultas);
+        reg.save(p1);
+        Paciente com=reg.load(321,"CC");
+        daof.commitTransaction();
+        daof.endSession();
+        Assert.assertEquals(p1.toString(),com.toString());
+    }
+    
+    @Test
+    public void CE4() throws IOException, PersistenceException{
+        properties.load(input);
+        
+        DaoFactory daof=DaoFactory.getInstance(properties);
+        
+        daof.beginSession();
+        
+        DaoPaciente reg=daof.getDaoPaciente();
+        try{
+        Paciente p1=new Paciente(666,"CC","Samuel Tapias",new Date(1997,6,9));
+        Paciente p2=new Paciente(666,"CC","Samuel Tapias",new Date(1997,6,9));
+        Consulta c1=new Consulta(new Date(2016,4,12),"El paciente presenta varicela");
+        Consulta c2=new Consulta(new Date(2016,5,12),"El paciente esta completamente curado");
+        Consulta c3=new Consulta(new Date(2017,6,3),"El paciente tiene esquizofrenia");
+        Set<Consulta> consultas=new LinkedHashSet<Consulta>();
+        Set<Consulta> consultas1=new LinkedHashSet<Consulta>();
+        consultas.add(c1);
+        consultas.add(c2);
+        consultas1.add(c3);
+        p1.setConsultas(consultas);
+        p2.setConsultas(consultas1);
+        reg.save(p1);
+        reg.save(p2);
+        daof.commitTransaction();
+        daof.endSession(); 
+        Assert.fail("Registro paciente ya existente");
+        }catch(PersistenceException e){
+            Assert.assertEquals(e.getMessage(),"Ese paciente ya esta registrado");
+        }
     }
     
     @Test
@@ -109,33 +164,6 @@ public class PacientePersistenceTest {
         DaoPaciente reg=daof.getDaoPaciente();       
         
         //IMPLEMENTAR PRUEBAS
-        
-        
-        
-        
-        
-       
-        //
-        Paciente p2=new Paciente(321,"CC","Julian Devia",new Date(1996,6,9));
-        Consulta c2=new Consulta(new Date(2016,3,20),"El paciente presenta una pequeña fractura en la tibia");
-        Set<Consulta> consultas2=new LinkedHashSet<Consulta>();
-        consultas2.add(c2);
-        p2.setConsultas(consultas2);
-        reg.save(p2);
-        //No deberia registrar nuevo paciente ya existente con mas de una consulta
-        try{
-        Paciente p3=new Paciente(321,"CC","Julian Devia",new Date(1996,6,9));
-        Consulta c3=new Consulta(new Date(2016,4,12),"El paciente presenta varicela");
-        Consulta c4=new Consulta(new Date(2016,5,12),"El paciente esta completamente curado");
-        Set<Consulta> consultas3=new LinkedHashSet<Consulta>();
-        consultas3.add(c3);
-        consultas3.add(c4);
-        p3.setConsultas(consultas3);
-        reg.save(p3);
-        Assert.fail("Registro paciente ya existente");
-        }catch(PersistenceException e){
-            Assert.assertEquals(e.getMessage(),"Ese paciente ya esta registrado");
-        }
         daof.commitTransaction();
         daof.endSession();        
     }
