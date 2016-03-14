@@ -83,6 +83,24 @@ public class PacientePersistenceTest {
         daof.endSession();  
     }
     
+    public void CE3() throws IOException, PersistenceException{
+        properties.load(input);
+        
+        DaoFactory daof=DaoFactory.getInstance(properties);
+        
+        daof.beginSession();
+        
+        DaoPaciente reg=daof.getDaoPaciente();
+        Paciente p1=new Paciente(123,"CC","German Lopez",new Date(1994,10,10));
+        Consulta c1=new Consulta(new Date(2016,1,13),"El paciente presenta fiebre alta");
+        Set<Consulta> consultas1=new LinkedHashSet<Consulta>();
+        consultas1.add(c1);
+        p1.setConsultas(consultas1);
+        reg.save(p1);
+	daof.commitTransaction();
+        daof.endSession(); 
+    }
+    
     @Test
     public void databaseConnectionTest() throws IOException, PersistenceException{
         properties.load(input);
@@ -96,13 +114,7 @@ public class PacientePersistenceTest {
         
         
         
-        //Deberia registrar paciente con una sola consulta
-        Paciente p1=new Paciente(123,"CC","German Lopez",new Date(1994,10,10));
-        Consulta c1=new Consulta(new Date(2016,1,13),"El paciente presenta fiebre alta");
-        Set<Consulta> consultas1=new LinkedHashSet<Consulta>();
-        consultas1.add(c1);
-        p1.setConsultas(consultas1);
-        reg.save(p1);
+       
         //
         Paciente p2=new Paciente(321,"CC","Julian Devia",new Date(1996,6,9));
         Consulta c2=new Consulta(new Date(2016,3,20),"El paciente presenta una pequeña fractura en la tibia");
