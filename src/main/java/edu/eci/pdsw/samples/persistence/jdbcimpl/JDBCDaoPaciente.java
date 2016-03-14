@@ -84,6 +84,7 @@ public class JDBCDaoPaciente implements DaoPaciente {
         ps.setString(2, p.getTipo_id());
         ps.setString(3, p.getNombre());
         ps.setDate(4, p.getFechaNacimiento());
+        ps.executeUpdate();
         Set<Consulta> consultas=p.getConsultas();
         int res=ps.executeUpdate();
         if(res!=1)throw new PersistenceException("Ese paciente ya esta registrado");
@@ -100,7 +101,7 @@ public class JDBCDaoPaciente implements DaoPaciente {
                 con.commit();
              }
         } catch (SQLException ex) {
-            throw new PersistenceException("No se registro el paciente correctamente",ex);
+            throw new PersistenceException("No se registro el paciente correctamente"+ex.getMessage(),ex);
         }
 
     }
