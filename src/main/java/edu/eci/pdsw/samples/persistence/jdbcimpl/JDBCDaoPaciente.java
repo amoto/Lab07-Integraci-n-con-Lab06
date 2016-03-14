@@ -86,6 +86,9 @@ public class JDBCDaoPaciente implements DaoPaciente {
         ps.setDate(4, p.getFechaNacimiento());
         ps.executeUpdate();
         Set<Consulta> consultas=p.getConsultas();
+        int res=ps.executeUpdate();
+        if(res!=1)throw new PersistenceException("Ese paciente ya esta registrado");
+            con.commit();
         for(Consulta c:consultas){
             String insertarC="insert into CONSULTAS (idCONSULTAS,fecha_y_hora,resumen,PACIENTES_id,PACIENTES_tipo_id) values (?,?,?,?,?)";
             ps=con.prepareStatement(insertarC);
@@ -95,16 +98,13 @@ public class JDBCDaoPaciente implements DaoPaciente {
             ps.setString(3,c.getResumen());
             ps.setInt(4,p.getId());
             ps.setString(5,p.getTipo_id());
-            ps.executeUpdate(); 
-        }
-        int res=ps.executeUpdate();
-        if(res!=1)throw new PersistenceException("Ese paciente ya esta registrado");
-            con.commit();
+            int res1=ps.executeUpdate();
+            if(res1!=1)throw new PersistenceException("Ese paciente ya esta registrado");
+                con.commit();
+             }
         } catch (SQLException ex) {
             throw new PersistenceException("No se registro el paciente correctamente"+ex.getMessage(),ex);
         }
-        
-        throw new RuntimeException("No se ha implementado el metodo 'load' del DAOPAcienteJDBC");
 
     }
 
