@@ -23,6 +23,7 @@ import edu.eci.pdsw.samples.persistence.PersistenceException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Date;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Properties;
 import java.util.Set;
@@ -57,6 +58,19 @@ public class PacientePersistenceTest {
         
         DaoPaciente reg=daof.getDaoPaciente();
         //IMPLEMENTAR PRUEBAS
+        //Deberia registrar paciente nuevo con mas de una consulta
+        Paciente p4 = new Paciente(12345,"TI","Pepito Perez",Date.valueOf("1996-07-09"));
+        Consulta c5 = new Consulta(Date.valueOf("2009-10-12"),"El paciente tiene fiebre");
+        Consulta c6 = new Consulta(Date.valueOf("2009-10-13"),"El paciente sigue con fiebre");
+        Set<Consulta> consultas4=new HashSet<Consulta>();
+        consultas4.add(c5);consultas4.add(c6);
+        p4.setConsultas(consultas4);
+        reg.save(p4);
+        
+        
+        //Deberia registrar paciente nuevo sin consultas
+        reg.save(new Paciente(9876, "TI", "Carmenzo", Date.valueOf("1995-07-10")));
+        
         //Deberia registrar paciente con una sola consulta
         Paciente p1=new Paciente(123,"CC","German Lopez",new Date(1994,10,10));
         Consulta c1=new Consulta(new Date(2016,1,13),"El paciente presenta fiebre alta");

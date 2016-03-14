@@ -21,6 +21,7 @@ import edu.eci.pdsw.samples.entities.Paciente;
 import edu.eci.pdsw.samples.persistence.DaoPaciente;
 import edu.eci.pdsw.samples.persistence.PersistenceException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -42,13 +43,22 @@ public class JDBCDaoPaciente implements DaoPaciente {
     @Override
     public Paciente load(int idpaciente, String tipoid) throws PersistenceException {
         PreparedStatement ps;
-        /*try {
-            
+        Paciente p;
+        try {
+            String consulta="select id,tipo_id,nombre,fecha_nacimiento from PACIENTES where id = ? and tipo_id = ?";
+            ps=con.prepareStatement(consulta);
+            ps.setInt(0, idpaciente);
+            ps.setString(1, tipoid);
+            ResultSet result=ps.executeQuery();
+            result.next();
+            p= new Paciente(result.getInt(1), result.getString(3), result.getString(2), result.getDate(4));
+            String consultaConsultas ="";
             
         } catch (SQLException ex) {
             throw new PersistenceException("An error ocurred while loading "+idpaciente,ex);
-        }*/
-        throw new RuntimeException("No se ha implementado el metodo 'load' del DAOPAcienteJDBC");
+        }
+        return p;
+        
     }
 
     @Override
