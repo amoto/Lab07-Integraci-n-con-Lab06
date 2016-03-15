@@ -61,9 +61,10 @@ public class JDBCDaoPaciente implements DaoPaciente {
                     p= new Paciente(idpaciente, tipoid, result.getString(1), result.getDate(2));
                     paciente=true;
                 }
+                if(result.getDate(4)!=null){
                 Consulta c=new Consulta(result.getDate(4), result.getString(5));
-                //c.setId(result.getInt(3));
                 consultas.add(c);
+                }
             }
             if(p==null) throw new PersistenceException("El paciente con "+tipoid+" "+idpaciente+" no existe");
             p.setConsultas(consultas);
@@ -80,18 +81,26 @@ public class JDBCDaoPaciente implements DaoPaciente {
     public void save(Paciente p) throws PersistenceException {
         PreparedStatement ps;
         try {
+        int valor=0;
+        String verificar="select count(id) from PACIENTES where id=? and tipo_id=?";
+        ps=con.prepareStatement(verificar);
+        ps.setInt(1,p.getId());
+        ps.setString(2, p.getTipo_id());
+        ResultSet resultado=ps.executeQuery();
+        if(resultado.next()){
+            valor=resultado.getInt(1);
+        }
+        if(valor!=0) throw new PersistenceException("El paciente con id: "+p.getId()+" ya esta registrado");
         String insertar="insert into PACIENTES  values(?,?,?,?)";
         ps=con.prepareStatement(insertar);
         ps.setInt(1,p.getId());
         ps.setString(2, p.getTipo_id());
         ps.setString(3, p.getNombre());
         ps.setDate(4, p.getFechaNacimiento());
-        System.out.println(p.getId()+" "+p.getTipo_id()+" "+p.getNombre()+" "+p.getFechaNacimiento());
-
-        Set<Consulta> consultas=p.getConsultas();
         int res=ps.executeUpdate();
-        if(res!=1)throw new PersistenceException("Ese paciente ya esta registrado");
+        if(res!=1)throw new PersistenceException("Error al registrar paciente con id: "+p.getId());
             con.commit();
+        Set<Consulta> consultas=p.getConsultas();
         for(Consulta c:consultas){
             String insertarC="insert into CONSULTAS (fecha_y_hora,resumen,PACIENTES_id,PACIENTES_tipo_id) values (?,?,?,?)";
             ps=con.prepareStatement(insertarC);
@@ -100,7 +109,7 @@ public class JDBCDaoPaciente implements DaoPaciente {
             ps.setInt(3,p.getId());
             ps.setString(4,p.getTipo_id());
             int res1=ps.executeUpdate();
-            if(res1!=1)throw new PersistenceException("Ese paciente ya esta registrado");
+            if(res1!=1)throw new PersistenceException("El paciente con id:"+p.getId()+" hubo error al registrar la consulta con id: "+c.getId());
                 con.commit();
              }
         } catch (SQLException ex) {
