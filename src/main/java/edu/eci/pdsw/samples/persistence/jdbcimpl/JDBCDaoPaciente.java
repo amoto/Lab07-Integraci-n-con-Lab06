@@ -62,8 +62,8 @@ public class JDBCDaoPaciente implements DaoPaciente {
                     paciente=true;
                 }
                 if(result.getDate(4)!=null){
-                Consulta c=new Consulta(result.getDate(4), result.getString(5));
-                consultas.add(c);
+                    Consulta c=new Consulta(result.getDate(4), result.getString(5));
+                    consultas.add(c);
                 }
             }
             if(p==null) throw new PersistenceException("El paciente con "+tipoid+" "+idpaciente+" no existe");

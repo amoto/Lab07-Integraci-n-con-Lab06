@@ -156,12 +156,12 @@ public class PacientePersistenceTest {
         
         DaoFactory daof=DaoFactory.getInstance(properties);
         
-        
+        Paciente p1=null;
         try{
             daof.beginSession();
         
         DaoPaciente reg=daof.getDaoPaciente();
-        Paciente p1=new Paciente(666,"CC","Samuel Tapias",new Date(1997,6,9));
+        p1=new Paciente(666,"CC","Samuel Tapias",new Date(1997,6,9));
         Paciente p2=new Paciente(666,"CC","Samuel Tapias",new Date(1997,6,9));
         Consulta c1=new Consulta(new Date(2016,4,12),"El paciente presenta varicela");
         Consulta c2=new Consulta(new Date(2016,5,12),"El paciente esta completamente curado");
@@ -180,7 +180,7 @@ public class PacientePersistenceTest {
         
         
         }catch(PersistenceException e){
-            Assert.assertEquals(e.getMessage(),"Ese paciente ya esta registrado");
+            Assert.assertEquals(e.getMessage(),"El paciente con id: "+p1.getId()+" ya esta registrado");
         }finally{
             daof.endSession(); 
         }
