@@ -122,12 +122,38 @@ public class JDBCDaoPaciente implements DaoPaciente {
     @Override
     public void update(Paciente p) throws PersistenceException {
         PreparedStatement ps;
-        /*try {
-            
+        try {
+            String update="update PACIENTES set nombre = ?, fecha_nacimiento = ? where id = ? , tipo_id = ?";
+            ps = con.prepareStatement(update);
+            ps.setString(1,p.getNombre());
+            ps.setDate(2,p.getFechaNacimiento());
+            ps.setInt(3, p.getId());
+            ps.setString(4,p.getTipo_id());
+            int res=ps.executeUpdate();
+            Set<Consulta> consultasNuevo = p.getConsultas();
+            Set<Consulta> consultasViejo =load(p.getId(),p.getTipo_id()).getConsultas();
+            ArrayList<String> consultasN=new ArrayList<>();
+            for (Consulta c:consultasViejo){
+                consultasN.add(c.toString());
+            }
+            for (Consulta c:consultasNuevo){
+                if(!consultasN.contains(c.toString())){
+                    String insertarC="insert into CONSULTAS (fecha_y_hora,resumen,PACIENTES_id,PACIENTES_tipo_id) values (?,?,?,?)";
+                    ps=con.prepareStatement(insertarC);
+                    ps.setDate(1,c.getFechayHora());
+                    ps.setString(2,c.getResumen());
+                    ps.setInt(3,p.getId());
+                    ps.setString(4,p.getTipo_id());
+                    res+=ps.executeUpdate();
+                }
+            }
+            if(res==0){
+                throw new PersistenceException("No seha podido actuaizar el paciente");
+            }
         } catch (SQLException ex) {
             throw new PersistenceException("An error ocurred while loading a product.",ex);
-        } */
-        throw new RuntimeException("No se ha implementado el metodo 'load' del DAOPAcienteJDBC");
+        } 
+        //throw new RuntimeException("No se ha implementado el metodo 'load' del DAOPAcienteJDBC");
     }
     
     public ArrayList<Paciente> loadAll() throws PersistenceException{

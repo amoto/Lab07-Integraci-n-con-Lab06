@@ -18,6 +18,8 @@ package edu.eci.pdsw.samples.services;
 
 import edu.eci.pdsw.samples.entities.Consulta;
 import edu.eci.pdsw.samples.entities.Paciente;
+import edu.eci.pdsw.samples.persistence.jdbcimpl.JDBCDaoFactory;
+import edu.eci.pdsw.samples.persistence.jdbcimpl.JDBCDaoPaciente;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +30,7 @@ import java.util.List;
 public abstract class ServiciosPacientes {
     
     
-    private static ServiciosPacientes instance=new ServiciosPacientesStub();
+    private static final ServiciosPacientes instance=new ServiciosPacientesDAO();
     public ArrayList<Paciente> pacientesLista;
     
     

@@ -2,15 +2,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <!--<groupId>edu.eci.pdsw.samples</groupId>
+    <groupId>edu.eci.pdsw.samples</groupId>
     <artifactId>tdd-webapp-base-nodb</artifactId>
     <version>1.0</version>
-    <packaging>war</packaging>-->
+    <packaging>war</packaging>
     
-    <groupId>edu.eci.pdsw</groupId>
+    <!--groupId>edu.eci.pdsw</groupId>
     <artifactId>DAOPatternTemplate</artifactId>
     <version>1.0</version>
-    <packaging>jar</packaging>
+    <packaging>jar</packaging-->
+    
 
     <name>tdd-webapp-base-nodb</name>
 
@@ -206,9 +207,3 @@
     </build>
 
 </project>
-=======
-        </plugins>
-    </build>                        
-                                                
-</project>
->>>>>>> cbbd8f2eb4314fd588665fb2c7b0c5c8a954784b
