@@ -18,6 +18,8 @@ package edu.eci.pdsw.samples.tests;
 
 import edu.eci.pdsw.samples.entities.Paciente;
 import edu.eci.pdsw.samples.services.ExcepcionServiciosPacientes;
+import edu.eci.pdsw.samples.services.ServiciosPacientes;
+import edu.eci.pdsw.samples.services.ServiciosPacientesDAO;
 import edu.eci.pdsw.samples.services.ServiciosPacientesStub;
 import java.sql.Date;
 import junit.framework.Assert;
@@ -58,6 +60,10 @@ public class PacientesTest {
         }catch(ExcepcionServiciosPacientes ex){
             fail("Arroja excepcion agregando un paciente repetido");
         }
+    }
+    @Test
+    public void test(){
+        ServiciosPacientes spd = ServiciosPacientes.getInstance();
     }
     
     

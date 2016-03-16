@@ -64,6 +64,7 @@ public class RegistroConsultaBean implements Serializable {
      * o de persistencia (por ejemplo, si el paciente ya existe).
      */
     public void registrarNuevoPaciente() throws ExcepcionServiciosPacientes{
+        System.out.println("classpath");
         sp.registrarNuevoPaciente(new Paciente(id,tipoId,nombre,Date.valueOf(anio+"-"+mes+"-"+dia)));
     }
     

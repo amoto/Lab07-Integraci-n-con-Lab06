@@ -12,6 +12,7 @@ import edu.eci.pdsw.samples.persistence.DaoPaciente;
 import edu.eci.pdsw.samples.persistence.PersistenceException;
 import edu.eci.pdsw.samples.persistence.jdbcimpl.JDBCDaoFactory;
 import edu.eci.pdsw.samples.persistence.jdbcimpl.JDBCDaoPaciente;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -32,9 +33,9 @@ public class ServiciosPacientesDAO extends ServiciosPacientes{
     public ServiciosPacientesDAO(){
         
         try {
-            InputStream input = null;
-            input = ClassLoader.getSystemResourceAsStream("applicationconfig.properties");
-            System.out.println(input.available());
+            
+            InputStream input = getClass().getClassLoader().getResource("applicationconfig.properties").openStream();
+            
             Properties properties=new Properties();
             properties.load(input);
             daoF = DaoFactory.getInstance(properties);
@@ -51,6 +52,7 @@ public class ServiciosPacientesDAO extends ServiciosPacientes{
         Paciente p=null;
         try {
             daoF.beginSession();
+            basePaciente = daoF.getDaoPaciente();
             p=basePaciente.load(idPaciente, tipoid);
         } catch (PersistenceException ex) {
             Logger.getLogger(ServiciosPacientesDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -68,6 +70,7 @@ public class ServiciosPacientesDAO extends ServiciosPacientes{
     public void registrarNuevoPaciente(Paciente p) throws ExcepcionServiciosPacientes {
         try {
             daoF.beginSession();
+            basePaciente = daoF.getDaoPaciente();
             basePaciente.save(p);
             daoF.commitTransaction();
         } catch (PersistenceException ex) {
@@ -85,6 +88,7 @@ public class ServiciosPacientesDAO extends ServiciosPacientes{
     public void agregarConsultaAPaciente(int idPaciente, String tipoid, Consulta c) throws ExcepcionServiciosPacientes {
         try {
             daoF.beginSession();
+            basePaciente = daoF.getDaoPaciente();
             Paciente p=basePaciente.load(idPaciente, tipoid);
             Set<Consulta> consultas =p.getConsultas();
             consultas.add(c);
@@ -108,6 +112,7 @@ public class ServiciosPacientesDAO extends ServiciosPacientes{
        ArrayList<Paciente> pacientes=null;
         try {
             daoF.beginSession();
+            basePaciente = daoF.getDaoPaciente();
             pacientes=basePaciente.loadAll();
         } catch (PersistenceException ex) {
             Logger.getLogger(ServiciosPacientesDAO.class.getName()).log(Level.SEVERE, null, ex);

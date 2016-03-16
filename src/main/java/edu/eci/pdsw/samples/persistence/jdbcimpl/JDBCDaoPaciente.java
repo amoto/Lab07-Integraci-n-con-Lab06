@@ -123,7 +123,7 @@ public class JDBCDaoPaciente implements DaoPaciente {
     public void update(Paciente p) throws PersistenceException {
         PreparedStatement ps;
         try {
-            String update="update PACIENTES set nombre = ?, fecha_nacimiento = ? where id = ? , tipo_id = ?";
+            String update="update PACIENTES set nombre = ?, fecha_nacimiento = ? where id = ? and tipo_id = ?";
             ps = con.prepareStatement(update);
             ps.setString(1,p.getNombre());
             ps.setDate(2,p.getFechaNacimiento());
