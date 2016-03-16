@@ -26,6 +26,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -127,6 +128,22 @@ public class JDBCDaoPaciente implements DaoPaciente {
             throw new PersistenceException("An error ocurred while loading a product.",ex);
         } */
         throw new RuntimeException("No se ha implementado el metodo 'load' del DAOPAcienteJDBC");
+    }
+    
+    public ArrayList<Paciente> loadAll() throws PersistenceException{
+        ArrayList<Paciente> pacientes=new ArrayList<Paciente>();
+        PreparedStatement ps;
+        try{
+            String pedir="select id,tipo_id from PACIENTES";
+            ps=con.prepareStatement(pedir);
+            ResultSet res=ps.executeQuery();
+            while(res.next()){
+                pacientes.add(load(res.getInt(1),res.getString(2)));
+            }
+        }catch(SQLException e){
+            throw new PersistenceException("Error al obtener todos los pacientes");
+        }
+        return pacientes;
     }
     
 }
