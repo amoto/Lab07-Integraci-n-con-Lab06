@@ -185,18 +185,7 @@ public class PacientePersistenceTest {
             daof.endSession(); 
         }
     }
-    /*
-    @Test
-    public void databaseConnectionTest() throws IOException, PersistenceException{
-        properties.load(input);
-        DaoFactory daof=DaoFactory.getInstance(properties);
-        daof.beginSession();
-        DaoPaciente reg=daof.getDaoPaciente();       
-        
-        //IMPLEMENTAR PRUEBAS
-        daof.commitTransaction();
-        daof.endSession();        
-    }*/
+
     
     
 }
