@@ -70,5 +70,5 @@ public abstract class ServiciosPacientes {
      */
     public abstract void agregarConsultaAPaciente(int idPaciente,String tipoid,Consulta c) throws ExcepcionServiciosPacientes;
     
-    public abstract ArrayList<Paciente> getPacientes();
+    public abstract ArrayList<Paciente> getPacientes() throws ExcepcionServiciosPacientes;
 }

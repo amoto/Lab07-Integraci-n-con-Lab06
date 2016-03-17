@@ -86,7 +86,7 @@ public class ServiciosPacientesStub extends ServiciosPacientes{
     }
 
     @Override
-    public ArrayList<Paciente> getPacientes() {
+    public ArrayList<Paciente> getPacientes() throws ExcepcionServiciosPacientes{
        for(Tupla<Integer, String> i: pacientes.keySet()){
            if(!pacientesLista.contains(pacientes.get(i))){
                 pacientesLista.add(pacientes.get(i));

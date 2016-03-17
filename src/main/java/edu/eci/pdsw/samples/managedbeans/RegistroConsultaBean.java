@@ -206,7 +206,7 @@ public class RegistroConsultaBean implements Serializable {
         this.resumenc = reumenc;
     }
     
-    public ArrayList<Paciente> getPaciente(){
+    public ArrayList<Paciente> getPaciente() throws ExcepcionServiciosPacientes{
         return sp.getPacientes();
     }
 }

@@ -56,11 +56,13 @@ public class ServiciosPacientesDAO extends ServiciosPacientes{
             p=basePaciente.load(idPaciente, tipoid);
         } catch (PersistenceException ex) {
             Logger.getLogger(ServiciosPacientesDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ExcepcionServiciosPacientes(ex.getMessage());
         }finally{
             try {
                 daoF.endSession();
             } catch (PersistenceException ex) {
                 Logger.getLogger(ServiciosPacientesDAO.class.getName()).log(Level.SEVERE, null, ex);
+                throw new ExcepcionServiciosPacientes(ex.getMessage());
             }
         }
         return p;
@@ -75,11 +77,13 @@ public class ServiciosPacientesDAO extends ServiciosPacientes{
             daoF.commitTransaction();
         } catch (PersistenceException ex) {
             Logger.getLogger(ServiciosPacientesDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ExcepcionServiciosPacientes(ex.getMessage());
         }finally{
             try {
                 daoF.endSession();
             } catch (PersistenceException ex) {
                 Logger.getLogger(ServiciosPacientesDAO.class.getName()).log(Level.SEVERE, null, ex);
+                throw new ExcepcionServiciosPacientes(ex.getMessage());
             }
         }
     }
@@ -98,17 +102,19 @@ public class ServiciosPacientesDAO extends ServiciosPacientes{
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         } catch (PersistenceException ex) {
             Logger.getLogger(ServiciosPacientesDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ExcepcionServiciosPacientes(ex.getMessage());
         }finally{
             try {
                 daoF.endSession();
             } catch (PersistenceException ex) {
                 Logger.getLogger(ServiciosPacientesDAO.class.getName()).log(Level.SEVERE, null, ex);
+                throw new ExcepcionServiciosPacientes(ex.getMessage());
             }
         }
     }
 
     @Override
-    public ArrayList<Paciente> getPacientes() {
+    public ArrayList<Paciente> getPacientes() throws ExcepcionServiciosPacientes{
        ArrayList<Paciente> pacientes=null;
         try {
             daoF.beginSession();
@@ -116,11 +122,13 @@ public class ServiciosPacientesDAO extends ServiciosPacientes{
             pacientes=basePaciente.loadAll();
         } catch (PersistenceException ex) {
             Logger.getLogger(ServiciosPacientesDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ExcepcionServiciosPacientes(ex.getMessage());
         }finally{
            try {
                daoF.endSession();
            } catch (PersistenceException ex) {
                Logger.getLogger(ServiciosPacientesDAO.class.getName()).log(Level.SEVERE, null, ex);
+               throw new ExcepcionServiciosPacientes(ex.getMessage());
            }
         }
         return pacientes;
