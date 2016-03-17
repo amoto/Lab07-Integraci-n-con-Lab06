@@ -148,7 +148,7 @@ public class JDBCDaoPaciente implements DaoPaciente {
                 }
             }
             if(res==0){
-                throw new PersistenceException("No seha podido actuaizar el paciente");
+                throw new PersistenceException("No se ha podido actuaizar los datos del paciente con id: "+p.getId());
             }
         } catch (SQLException ex) {
             throw new PersistenceException("An error ocurred while loading a product.",ex);
