@@ -23,6 +23,7 @@ public class MapperDAOPaciente implements DaoPaciente {
     private PacienteMapper pm;
     
     public MapperDAOPaciente(SqlSession sqlss){
+        //System.out.println(sqlss);
         pm= sqlss.getMapper(PacienteMapper.class);
     }
     
@@ -34,7 +35,7 @@ public class MapperDAOPaciente implements DaoPaciente {
 
     @Override
     public void save(Paciente p) throws PersistenceException {
-        if(pm.loadPacienteById(p.getId(), p.getTipo_id())!=null) throw new PersistenceException("El paciente"+p.toString()+" ya existe");
+        if(pm.loadPacienteById(p.getId(), p.getTipo_id())!=null) throw new PersistenceException("El paciente con id: "+p.getId()+" ya esta registrado");
         pm.insertPaciente(p);
         for(Consulta c: p.getConsultas()){
             pm.insertConsulta(c, p.getId(), p.getTipo_id());

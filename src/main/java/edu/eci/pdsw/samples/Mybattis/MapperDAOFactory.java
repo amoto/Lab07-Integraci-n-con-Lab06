@@ -50,7 +50,7 @@ public class MapperDAOFactory extends DaoFactory{
 
     @Override
     public DaoPaciente getDaoPaciente() {
-        
+        System.out.println(sqlss);
         return new MapperDAOPaciente(sqlss);
     }
 

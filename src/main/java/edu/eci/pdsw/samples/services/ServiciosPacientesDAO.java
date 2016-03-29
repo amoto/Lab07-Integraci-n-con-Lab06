@@ -39,10 +39,13 @@ public class ServiciosPacientesDAO extends ServiciosPacientes{
             Properties properties=new Properties();
             properties.load(input);
             daoF = DaoFactory.getInstance(properties);
+            //daoF.beginSession();
             basePaciente=daoF.getDaoPaciente();
         } catch (IOException ex) {
             Logger.getLogger(ServiciosPacientesDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } //catch (PersistenceException ex) {
+            //Logger.getLogger(ServiciosPacientesDAO.class.getName()).log(Level.SEVERE, null, ex);
+        //}
         
     }
     

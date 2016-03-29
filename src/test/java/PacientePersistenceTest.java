@@ -54,8 +54,8 @@ public class PacientePersistenceTest {
     
     @Test
     public void CE1() throws IOException, PersistenceException{
-        Assert.assertTrue(true);
-        /*properties.load(input);
+        //Assert.assertTrue(true);
+        properties.load(input);
         DaoFactory daof=DaoFactory.getInstance(properties);
         daof.beginSession();
         DaoPaciente reg=daof.getDaoPaciente();
@@ -68,25 +68,26 @@ public class PacientePersistenceTest {
         consultas4.add(c5);consultas4.add(c6);
         p4.setConsultas(consultas4);
         reg.save(p4);
+        daof.commitTransaction();
         Paciente test =reg.load(p4.getId(),p4.getTipo_id());
         boolean worked= test.getId()==p4.getId() && test.getTipo_id().equals(p4.getTipo_id()) && 
                 test.getNombre().equals(p4.getNombre()) && test.getFechaNacimiento().equals(p4.getFechaNacimiento());
         LinkedList<String> s=new LinkedList<String>();
         for (Consulta c: test.getConsultas()){
-            s.add(c.toString());
+            s.add(c.toString().split(",")[1]+c.toString().split(",")[2]);
         }
         for (Consulta c : consultas4) {
-            worked=worked && s.contains(c.toString());
+            worked=worked && s.contains(c.toString().split(",")[1]+c.toString().split(",")[2]);
             
         }
-        daof.commitTransaction();
+        
         daof.endSession();  
-        Assert.assertTrue("Falla agregando un paciente con mas de una consulta", worked);*/
+        Assert.assertTrue("Falla agregando un paciente con mas de una consulta", worked);
     }
     @Test
     public void CE2() throws IOException, PersistenceException{
-        Assert.assertTrue(true);
-        /*properties.load(input);
+        //Assert.assertTrue(true);
+        properties.load(input);
         DaoFactory daof=DaoFactory.getInstance(properties);
         boolean worked=false;
         try {
@@ -94,9 +95,10 @@ public class PacientePersistenceTest {
             DaoPaciente reg=daof.getDaoPaciente();
             Paciente p = new Paciente(9876, "TI", "Carmenzo", Date.valueOf("1995-07-10"));
             reg.save(p);
+            daof.commitTransaction();
             Paciente test= reg.load(p.getId(),p.getTipo_id());
             worked =test.toString().equals(p.toString());
-            daof.commitTransaction();
+            
         } catch (PersistenceException ex) {
             Logger.getLogger(PacientePersistenceTest.class.getName()).log(Level.SEVERE, null, ex);
             Assert.fail();
@@ -104,7 +106,7 @@ public class PacientePersistenceTest {
         finally{
             daof.endSession(); 
         }
-        Assert.assertTrue("Falla agregando paciente sin consultas",worked);*/
+        Assert.assertTrue("Falla agregando paciente sin consultas",worked);
         
         //Deberia registrar paciente nuevo sin consultas
          
@@ -112,8 +114,8 @@ public class PacientePersistenceTest {
     }
     
     public void CE3() throws IOException, PersistenceException{
-        Assert.assertTrue(true);
-        /*properties.load(input);
+        //Assert.assertTrue(true);
+        properties.load(input);
         
         DaoFactory daof=DaoFactory.getInstance(properties);
         
@@ -126,16 +128,17 @@ public class PacientePersistenceTest {
         consultas.add(c1);
         p1.setConsultas(consultas);
         reg.save(p1);
+        daof.commitTransaction();
         Paciente com=reg.load(123,"CC");
-	daof.commitTransaction();
+	
         daof.endSession(); 
-        Assert.assertEquals(p1.toString(),com.toString());*/
+        Assert.assertEquals(p1.toString(),com.toString());
     }
     
     @Test
     public void CE3Segundo() throws IOException, PersistenceException{
-        Assert.assertTrue(true);
-        /*properties.load(input);
+        //Assert.assertTrue(true);
+        properties.load(input);
         
         DaoFactory daof=DaoFactory.getInstance(properties);
         
@@ -148,16 +151,17 @@ public class PacientePersistenceTest {
         consultas.add(c1);
         p1.setConsultas(consultas);
         reg.save(p1);
-        Paciente com=reg.load(321,"CC");
         daof.commitTransaction();
+        Paciente com=reg.load(321,"CC");
+        
         daof.endSession();
-        Assert.assertEquals(p1.toString(),com.toString());*/
+        Assert.assertEquals(p1.toString(),com.toString());
     }
     
     @Test
     public void CE4() throws IOException, PersistenceException{
-        Assert.assertTrue(true);
-        /*properties.load(input);
+        //Assert.assertTrue(true);
+        properties.load(input);
         
         DaoFactory daof=DaoFactory.getInstance(properties);
         
@@ -179,16 +183,18 @@ public class PacientePersistenceTest {
         p1.setConsultas(consultas);
         p2.setConsultas(consultas1);
         reg.save(p1);
-        reg.save(p2);
-        Assert.fail("Registro paciente ya existente");
         daof.commitTransaction();
+        reg.save(p2);
+        daof.commitTransaction();
+        Assert.fail("Registro paciente ya existente");
+        
         
         
         }catch(PersistenceException e){
             Assert.assertEquals(e.getMessage(),"El paciente con id: "+p1.getId()+" ya esta registrado");
         }finally{
             daof.endSession(); 
-        }*/
+        }
     }
 
     

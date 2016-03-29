@@ -63,15 +63,17 @@ public class PersistenceTest {
         SqlSession sqlss = sessionfact.openSession();
         PacienteMapper pm= sqlss.getMapper(PacienteMapper.class);
         //Deberia registrar paciente nuevo con mas de una consulta
-        Paciente p4 = new Paciente(1234567890,"TI","Pepito Perez",Date.valueOf("1996-07-09"));
+        Paciente p4 = new Paciente(124567890,"TI","Pepito Perez",Date.valueOf("1996-07-09"));
         Consulta c5 = new Consulta(Date.valueOf("2009-10-12"),"El paciente tiene fiebre");
         Consulta c6 = new Consulta(Date.valueOf("2009-10-13"),"El paciente sigue con fiebre");
         Set<Consulta> consultas4=new HashSet<>();
         consultas4.add(c5);consultas4.add(c6);
         p4.setConsultas(consultas4);
         pm.insertPaciente(p4);
+        sqlss.commit();
         for(Consulta c: p4.getConsultas()){
             pm.insertConsulta(c, p4.getId(), p4.getTipo_id());
+            sqlss.commit();
         }
         Paciente test=pm.loadPacienteById(p4.getId(), p4.getTipo_id());
         LinkedList<String> cadenas=new LinkedList<>();
@@ -91,8 +93,9 @@ public class PersistenceTest {
         SqlSessionFactory sessionfact = getSqlSessionFactory();
         SqlSession sqlss = sessionfact.openSession();
         PacienteMapper pm= sqlss.getMapper(PacienteMapper.class);
-        Paciente p = new Paciente(9876, "TI", "Carmenzo", Date.valueOf("1995-07-10"));
+        Paciente p = new Paciente(98796, "TI", "Carmenzo", Date.valueOf("1995-07-10"));
         pm.insertPaciente(p);
+        sqlss.commit();
         Paciente test=pm.loadPacienteById(p.getId(), p.getTipo_id());
         sqlss.close();
         Assert.assertEquals(test.toString(),p.toString());
@@ -109,8 +112,10 @@ public class PersistenceTest {
         consultas.add(c1);
         p1.setConsultas(consultas);
         pm.insertPaciente(p1);
+        sqlss.commit();
         for(Consulta c: p1.getConsultas()){
             pm.insertConsulta(c, p1.getId(), p1.getTipo_id());
+            sqlss.commit();
         }
         Paciente test=pm.loadPacienteById(p1.getId(), p1.getTipo_id());
         sqlss.close();

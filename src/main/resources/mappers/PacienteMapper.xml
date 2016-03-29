@@ -32,7 +32,7 @@
         insert into CONSULTAS (fecha_y_hora, resumen, PACIENTES_id,PACIENTES_tipo_id) values (#{consulta.fechayHora},#{consulta.resumen},#{idPaciente},#{tipoIdPaciente})
     </insert>
     
-     <select id='loadPacienteById'  resultMap='PacienteResult'>
+     <select id='loadAll'  resultMap='PacienteResult'>
         select pa.id, pa.tipo_id,pa.nombre,pa.fecha_nacimiento, co.idCONSULTAS as co_idCONSULTAS,co.fecha_y_hora as co_fecha_y_hora ,co.resumen as co_resumen from PACIENTES as pa left 
         join CONSULTAS as co on pa.id=co.PACIENTES_id and pa.tipo_id=co.PACIENTES_tipo_id 
     </select>     
