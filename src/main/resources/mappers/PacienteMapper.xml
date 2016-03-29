@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="edu.eci.pdsw.samples.mybatis.mappers.PacienteMapper">
+    <resultMap type='Paciente' id='PacienteResult'>
+        <id property='id' column='id'/>
+        <id property='tipo_id' column='tipo_id'/>
+        <result property='nombre' column='nombre'/>
+        <result property='fechaNacimiento' column='fecha_nacimiento'/>
+        <collection property='consultas' ofType='Consulta' resultMap='ConsultaResult' columnPrefix='co_'/>
+    </resultMap>
+    
+    <resultMap type='Consulta' id='ConsultaResult'>
+        <id property='id' column='idCONSULTAS'/>
+        <result property='fechayHora' column='fecha_y_hora'/>
+        <result property='resumen' column='resumen'/>
+    </resultMap>
+    
+    <select id='loadPacienteById' parameterType='map' resultMap='PacienteResult'>
+        select pa.id, pa.tipo_id,pa.nombre,pa.fecha_nacimiento, co.idCONSULTAS as co_idCONSULTAS,co.fecha_y_hora as co_fecha_y_hora ,co.resumen as co_resumen from PACIENTES as pa left 
+        join CONSULTAS as co on pa.id=co.PACIENTES_id and pa.tipo_id=co.PACIENTES_tipo_id 
+        where pa.id=#{idPaciente} and pa.tipo_id=#{tipoIdPaciente}
+    </select>
+    
+    <insert id='insertPaciente' parameterType='map'>
+        insert into PACIENTES values (#{paciente.id},#{paciente.tipo_id},#{paciente.nombre},#{paciente.fechaNacimiento})
+    </insert>
+    
+     <insert id='insertConsulta' parameterType='map' useGeneratedKeys='true' keyProperty='consulta.id'>
+        insert into CONSULTAS (fecha_y_hora, resumen, PACIENTES_id,PACIENTES_tipo_id) values (#{consulta.fechayHora},#{consulta.resumen},#{idPaciente},#{tipoIdPaciente})
+    </insert>
+    
+     <select id='loadPacienteById'  resultMap='PacienteResult'>
+        select pa.id, pa.tipo_id,pa.nombre,pa.fecha_nacimiento, co.idCONSULTAS as co_idCONSULTAS,co.fecha_y_hora as co_fecha_y_hora ,co.resumen as co_resumen from PACIENTES as pa left 
+        join CONSULTAS as co on pa.id=co.PACIENTES_id and pa.tipo_id=co.PACIENTES_tipo_id 
+    </select>     
+     
+                                                                                                
+</mapper>

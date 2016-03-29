@@ -16,6 +16,7 @@
  */
 package edu.eci.pdsw.samples.persistence;
 
+import edu.eci.pdsw.samples.Mybattis.MapperDAOFactory;
 import edu.eci.pdsw.samples.persistence.jdbcimpl.JDBCDaoFactory;
 import java.util.Properties;
 
@@ -36,7 +37,9 @@ public abstract class DaoFactory {
                 if (instance == null) {
                     if (appProperties.get("dao").equals("jdbc")) {
                         instance = new JDBCDaoFactory(appProperties);
-                    } else {
+                    }else if(appProperties.get("dao").equals("mybatis")){
+                        instance=new MapperDAOFactory(appProperties);
+                    }else {
                         throw new RuntimeException("Wrong configuration: Unsupported DAO:" + appProperties.get("dao"));
                     }
                 }
