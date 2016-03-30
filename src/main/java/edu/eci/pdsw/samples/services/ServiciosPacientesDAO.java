@@ -79,7 +79,6 @@ public class ServiciosPacientesDAO extends ServiciosPacientes{
             basePaciente = daoF.getDaoPaciente();
             basePaciente.save(p);
             daoF.commitTransaction();
-            System.out.println("Registro muy bien!");
         } catch (PersistenceException ex) {
             try {
                 daoF.rollbackTransaction();
@@ -133,12 +132,9 @@ public class ServiciosPacientesDAO extends ServiciosPacientes{
     public ArrayList<Paciente> getPacientes() throws ExcepcionServiciosPacientes{
        ArrayList<Paciente> pacientes=null;
         try {
-            System.out.println("Aqui pasa algo");
             daoF.beginSession();
             basePaciente = daoF.getDaoPaciente();
-            System.out.println("Aqui pasa algo1");
             pacientes=basePaciente.loadAll();
-            System.out.println("Aqui pasa algo2");
         } catch (PersistenceException ex) {
             Logger.getLogger(ServiciosPacientesDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new ExcepcionServiciosPacientes(ex.getMessage());

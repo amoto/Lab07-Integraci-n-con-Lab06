@@ -23,7 +23,6 @@ public class MapperDAOPaciente implements DaoPaciente {
     private PacienteMapper pm;
     
     public MapperDAOPaciente(SqlSession sqlss){
-        //System.out.println(sqlss);
         pm= sqlss.getMapper(PacienteMapper.class);
     }
     
@@ -49,13 +48,9 @@ public class MapperDAOPaciente implements DaoPaciente {
       LinkedList<String> consultas=new LinkedList<String>();
       for(Consulta c: test.getConsultas()){
           consultas.add(c.toString().split(",")[1]+c.toString().split(",")[2]);
-          System.out.println(c.toString().split(",")[1]+c.toString().split(",")[2]);
       }
-        System.out.println("antiguas");
       for(Consulta c: p.getConsultas()){
-          System.out.println(c.toString().split(",")[1]+c.toString().split(",")[2]);
           if(!consultas.contains(c.toString().split(",")[1]+c.toString().split(",")[2]) || c.getId()==-1){
-              System.out.println("nueva");
               pm.insertConsulta(c, p.getId(), p.getTipo_id());
           }
       }
