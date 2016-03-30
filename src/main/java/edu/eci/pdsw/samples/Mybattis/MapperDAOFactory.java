@@ -43,14 +43,14 @@ public class MapperDAOFactory extends DaoFactory{
     
     @Override
     public void beginSession() throws PersistenceException {
-        if(sqlss==null){
+        //if(sqlss==null){
             sqlss=sqlsf.openSession();
-        }
+        //}
     }
 
     @Override
     public DaoPaciente getDaoPaciente() {
-        System.out.println(sqlss);
+        //System.out.println(sqlss);
         return new MapperDAOPaciente(sqlss);
     }
 

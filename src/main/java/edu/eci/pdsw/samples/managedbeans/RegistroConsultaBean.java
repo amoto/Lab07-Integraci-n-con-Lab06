@@ -38,7 +38,10 @@ import javax.faces.bean.SessionScoped;
 @ManagedBean(name="RegistroBean")
 @SessionScoped
 public class RegistroConsultaBean implements Serializable {
-    public static ServiciosPacientes sp=ServiciosPacientes.getInstance();
+    
+    
+    
+    private final ServiciosPacientes sp=ServiciosPacientes.getInstance();
     //Atributos para paciente
     int id=0;
     String tipoId="";

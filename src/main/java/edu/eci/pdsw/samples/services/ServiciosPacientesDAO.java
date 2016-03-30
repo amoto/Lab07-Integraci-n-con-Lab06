@@ -39,13 +39,12 @@ public class ServiciosPacientesDAO extends ServiciosPacientes{
             Properties properties=new Properties();
             properties.load(input);
             daoF = DaoFactory.getInstance(properties);
-            //daoF.beginSession();
-            basePaciente=daoF.getDaoPaciente();
+           // daoF.beginSession();
+            //basePaciente=daoF.getDaoPaciente();
+          
         } catch (IOException ex) {
             Logger.getLogger(ServiciosPacientesDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } //catch (PersistenceException ex) {
-            //Logger.getLogger(ServiciosPacientesDAO.class.getName()).log(Level.SEVERE, null, ex);
-        //}
+        }
         
     }
     
@@ -57,6 +56,8 @@ public class ServiciosPacientesDAO extends ServiciosPacientes{
             daoF.beginSession();
             basePaciente = daoF.getDaoPaciente();
             p=basePaciente.load(idPaciente, tipoid);
+            
+            
         } catch (PersistenceException ex) {
             Logger.getLogger(ServiciosPacientesDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new ExcepcionServiciosPacientes(ex.getMessage());
@@ -78,7 +79,13 @@ public class ServiciosPacientesDAO extends ServiciosPacientes{
             basePaciente = daoF.getDaoPaciente();
             basePaciente.save(p);
             daoF.commitTransaction();
+            System.out.println("Registro muy bien!");
         } catch (PersistenceException ex) {
+            try {
+                daoF.rollbackTransaction();
+            } catch (PersistenceException ex1) {
+                Logger.getLogger(ServiciosPacientesDAO.class.getName()).log(Level.SEVERE, null, ex1);
+            }
             Logger.getLogger(ServiciosPacientesDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new ExcepcionServiciosPacientes(ex.getMessage());
         }finally{
@@ -102,8 +109,14 @@ public class ServiciosPacientesDAO extends ServiciosPacientes{
             p.setConsultas(consultas);
             basePaciente.update(p);
             daoF.commitTransaction();
+            
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         } catch (PersistenceException ex) {
+            try {
+                daoF.rollbackTransaction();
+            } catch (PersistenceException ex1) {
+                Logger.getLogger(ServiciosPacientesDAO.class.getName()).log(Level.SEVERE, null, ex1);
+            }
             Logger.getLogger(ServiciosPacientesDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new ExcepcionServiciosPacientes(ex.getMessage());
         }finally{
@@ -120,9 +133,12 @@ public class ServiciosPacientesDAO extends ServiciosPacientes{
     public ArrayList<Paciente> getPacientes() throws ExcepcionServiciosPacientes{
        ArrayList<Paciente> pacientes=null;
         try {
+            System.out.println("Aqui pasa algo");
             daoF.beginSession();
             basePaciente = daoF.getDaoPaciente();
+            System.out.println("Aqui pasa algo1");
             pacientes=basePaciente.loadAll();
+            System.out.println("Aqui pasa algo2");
         } catch (PersistenceException ex) {
             Logger.getLogger(ServiciosPacientesDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new ExcepcionServiciosPacientes(ex.getMessage());
