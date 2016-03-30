@@ -5,7 +5,7 @@ deployment:
   staging:
     branch: master
     heroku:
-      appname: lab06pdsw
+      appname: lab07pdsw
 test:
   post:
     - mvn site
